@@ -5,10 +5,6 @@ from PyInstaller.utils.hooks import collect_submodules
 
 tcl_framework = os.environ.get('TCL_LIBRARY', '/System/Library/Frameworks/Tcl.framework/Tcl')
 tk_framework = os.environ.get('TK_LIBRARY', '/System/Library/Frameworks/Tk.framework/Tk')
-tcltk_binaries = [
-    (tk_framework, 'tk'),
-    (tcl_framework, 'tcl')
-]
 
 block_cipher = None
 
@@ -44,6 +40,10 @@ a = Analysis(
     noarchive=False,
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+tcltk_binaries = a.binaries + [
+    (tk_framework, 'tk'),
+    (tcl_framework, 'tcl')
+]
 
 if sys.platform == 'darwin':
     exe = EXE(
@@ -61,7 +61,7 @@ if sys.platform == 'darwin':
     )
     coll = COLLECT(
         exe,
-        a.binaries + tcltk_binaries,
+        tcltk_binaries,
         a.zipfiles,
         a.datas,
         strip=False,
