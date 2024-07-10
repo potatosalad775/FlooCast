@@ -19,7 +19,7 @@ hidden_imports += collect_submodules('serial_tool')
 hidden_imports += collect_submodules('notify-py')
 hidden_imports += collect_submodules('certifi')
 
-if sys.platform == 'darwin' && macos_version == '12':
+if (sys.platform == 'darwin' && macos_version == '12'):
     a = Analysis(
         ['main.py'],
         pathex=[],
