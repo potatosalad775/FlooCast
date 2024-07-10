@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import sys
 from PyInstaller.utils.hooks import collect_submodules
 
 tcl_framework = os.environ.get('TCL_LIBRARY', '/System/Library/Frameworks/Tcl.framework/Tcl')
