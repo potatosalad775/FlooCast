@@ -49,6 +49,8 @@ jobs:
         pyinstaller --clean --distpath dist/FlooCast-arm64 main.spec
         # Remove unnecessary artifact
         rm -rf dist/FlooCast-arm64/FlooCast
+        # Ad-hoc Codesign
+        /usr/bin/codesign --force --deep --sign - dist/FlooCast-arm64/FlooCast.app
 
     - name: Build with PyInstaller (macOS x86_64)
       if: runner.os == 'macOS' && matrix.os == 'macos-12'
@@ -56,6 +58,8 @@ jobs:
         pyinstaller --clean --distpath dist/FlooCast-x86_64 main.spec
         # Remove unnecessary artifact
         rm -rf dist/FlooCast-x86_64/FlooCast
+        # Ad-hoc Codesign
+        /usr/bin/codesign --force --deep --sign - dist/FlooCast-x86_64/FlooCast.app
 
     - name: Build with PyInstaller (Non-macOS)
       if: runner.os != 'macOS'
