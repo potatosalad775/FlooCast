@@ -59,7 +59,7 @@ if sys.platform == 'darwin':
     )
     coll = COLLECT(
         exe,
-        tcltk_binaries,
+        a.binaries,
         a.zipfiles,
         a.datas,
         strip=False,
