@@ -1,10 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
-import sys
-import tkinter
 from PyInstaller.utils.hooks import collect_submodules
 
-tcl_dir = os.path.dirname(tkinter.__file__)
+tcl_framework = os.environ.get('TCL_LIBRARY', '/System/Library/Frameworks/Tcl.framework/Tcl')
+tk_framework = os.environ.get('TK_LIBRARY', '/System/Library/Frameworks/Tk.framework/Tk')
 
 block_cipher = None
 
@@ -20,7 +19,10 @@ hidden_imports += collect_submodules('certifi')
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[],
+    binaries=[
+        (tk_framework, 'tk'),
+        (tcl_framework, 'tcl')
+    ],
     datas=[
         ('FlooCastApp.gif', '.'),
         ('FlooCastApp.ico', '.'),
@@ -28,8 +30,6 @@ a = Analysis(
         ('onS.png', '.'),
         ('offS.png', '.'),
         ('locales', 'locales'),
-        ('tk', os.path.join(tcl_dir, 'tk')),
-        ('tcl', os.path.join(tcl_dir, 'tcl'))
     ],
     hiddenimports=hidden_imports,
     hookspath=[],
