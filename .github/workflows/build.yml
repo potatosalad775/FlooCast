@@ -52,18 +52,30 @@ jobs:
       - name: Build with PyInstaller (macOS ARM)
         if: runner.os == 'macOS' && matrix.os == 'macos-latest'
         run: |
+          # Clean directory
+          rm -rf dist/FlooCast-arm64/
+
+          # Build App
           pyinstaller --clean --distpath dist/FlooCast-arm64 main.spec
+          
           # Remove unnecessary artifact
           rm -rf dist/FlooCast-arm64/FlooCast
+          
           # Ad-hoc Codesign
           /usr/bin/codesign --force --deep --sign - dist/FlooCast-arm64/FlooCast.app
 
       - name: Build with PyInstaller (macOS x86_64)
         if: runner.os == 'macOS' && matrix.os == 'macos-12'
         run: |
+          # Clean directory
+          rm -rf dist/FlooCast-x86_64/
+          
+          # Build App
           pyinstaller --clean --distpath dist/FlooCast-x86_64 main.spec
+          
           # Remove unnecessary artifact
           rm -rf dist/FlooCast-x86_64/FlooCast
+          
           # Ad-hoc Codesign
           /usr/bin/codesign --force --deep --sign - dist/FlooCast-x86_64/FlooCast.app
 
