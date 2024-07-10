@@ -25,8 +25,7 @@ a = Analysis(
         ('offS.png', '.'),
         ('locales', 'locales'),
     ],
-    hiddenimports=hidden_imports,
-    collect_all=['tkinter', 'pyserial', 'pystray', 'serial_tool', 'notify-py', 'certifi'],
+    #hiddenimports=hidden_imports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -69,10 +68,6 @@ if sys.platform == 'darwin':
         bundle_identifier='com.potatosalad775.floocast',
         info_plist={
             'NSHighResolutionCapable': 'True'
-            'CFBundleShortVersionString': '1.0.9',  # Add your version number
-            'CFBundleVersion': '109',  # Build number
-            'NSPrincipalClass': 'NSApplication',
-            'NSAppleScriptEnabled': False,
         },
     )
 else:
