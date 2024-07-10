@@ -5,6 +5,10 @@ from PyInstaller.utils.hooks import collect_submodules
 
 tcl_framework = os.environ.get('TCL_LIBRARY', '/System/Library/Frameworks/Tcl.framework/Tcl')
 tk_framework = os.environ.get('TK_LIBRARY', '/System/Library/Frameworks/Tk.framework/Tk')
+tcltk_binaries = [
+    (tk_framework, 'tk'),
+    (tcl_framework, 'tcl')
+]
 
 block_cipher = None
 
@@ -20,10 +24,7 @@ hidden_imports += collect_submodules('certifi')
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[
-        (tk_framework, 'tk'),
-        (tcl_framework, 'tcl')
-    ],
+    binaries=[],
     datas=[
         ('FlooCastApp.gif', '.'),
         ('FlooCastApp.ico', '.'),
@@ -60,7 +61,7 @@ if sys.platform == 'darwin':
     )
     coll = COLLECT(
         exe,
-        a.binaries,
+        a.binaries + tcltk_binaries,
         a.zipfiles,
         a.datas,
         strip=False,
