@@ -43,7 +43,8 @@ jobs:
           pip install pyinstaller
           pip install tk pystray notify-py pyserial serial-tool certifi
       
-      - name: Set Tcl/Tk paths
+      - name: Set Tcl/Tk paths (macOS Only)
+        if: runner.os == 'macOS'
         run: |
           echo "TCL_LIBRARY=$(xcrun --show-sdk-path)/System/Library/Frameworks/Tcl.framework" >> $GITHUB_ENV
           echo "TK_LIBRARY=$(xcrun --show-sdk-path)/System/Library/Frameworks/Tk.framework" >> $GITHUB_ENV
