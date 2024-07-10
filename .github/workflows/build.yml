@@ -47,11 +47,15 @@ jobs:
       if: runner.os == 'macOS' && matrix.os == 'macos-latest'
       run: |
         pyinstaller --clean --distpath dist/FlooCast-arm64 main.spec
+        # Remove unnecessary artifact
+        rm -rf dist/FlooCast-arm64/FlooCast
 
     - name: Build with PyInstaller (macOS x86_64)
       if: runner.os == 'macOS' && matrix.os == 'macos-12'
       run: |
         pyinstaller --clean --distpath dist/FlooCast-x86_64 main.spec
+        # Remove unnecessary artifact
+        rm -rf dist/FlooCast-x86_86/FlooCast
 
     - name: Build with PyInstaller (Non-macOS)
       if: runner.os != 'macOS'
@@ -63,14 +67,14 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: FlooCast-macos-arm64
-        path: dist/FlooCast-arm64/FlooCast.app
+        path: dist/FlooCast-arm64
 
     - name: Upload artifact (macOS x86_64)
       if: runner.os == 'macOS' && matrix.os == 'macos-12'
       uses: actions/upload-artifact@v4
       with:
         name: FlooCast-macos-x86_64
-        path: dist/FlooCast-x86_64/FlooCast.app
+        path: dist/FlooCast-x86_64
 
     - name: Upload artifact (macOS ARM)
       if: runner.os != 'macOS'
