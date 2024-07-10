@@ -17,35 +17,34 @@ hidden_imports += collect_submodules('serial_tool')
 hidden_imports += collect_submodules('notify-py')
 hidden_imports += collect_submodules('certifi')
 
-a = Analysis(
-    ['main.py'],
-    pathex=[],
-    binaries=[],
-    datas=[
-        ('FlooCastApp.gif', '.'),
-        ('FlooCastApp.ico', '.'),
-        ('FlooCastHeader.png', '.'),
-        ('onS.png', '.'),
-        ('offS.png', '.'),
-        ('locales', 'locales'),
-    ],
-    hiddenimports=hidden_imports,
-    hookspath=[],
-    hooksconfig={},
-    runtime_hooks=[],
-    excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
-    noarchive=False,
-)
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-tcltk_binaries = a.binaries + [
-    (tk_framework, 'tk'),
-    (tcl_framework, 'tcl')
-]
 
 if sys.platform == 'darwin':
+    a = Analysis(
+        ['main.py'],
+        pathex=[],
+        binaries=[
+            (tk_framework, 'tk'),
+            (tcl_framework, 'tcl')
+        ],
+        datas=[
+            ('FlooCastApp.gif', '.'),
+            ('FlooCastApp.ico', '.'),
+            ('FlooCastHeader.png', '.'),
+            ('onS.png', '.'),
+            ('offS.png', '.'),
+            ('locales', 'locales'),
+        ],
+        hiddenimports=hidden_imports,
+        hookspath=[],
+        hooksconfig={},
+        runtime_hooks=[],
+        excludes=[],
+        win_no_prefer_redirects=False,
+        win_private_assemblies=False,
+        cipher=block_cipher,
+        noarchive=False,
+    )
     exe = EXE(
         pyz,
         a.scripts,
@@ -79,6 +78,28 @@ if sys.platform == 'darwin':
         },
     )
 else:
+    a = Analysis(
+        ['main.py'],
+        pathex=[],
+        binaries=[],
+        datas=[
+            ('FlooCastApp.gif', '.'),
+            ('FlooCastApp.ico', '.'),
+            ('FlooCastHeader.png', '.'),
+            ('onS.png', '.'),
+            ('offS.png', '.'),
+            ('locales', 'locales'),
+        ],
+        hiddenimports=hidden_imports,
+        hookspath=[],
+        hooksconfig={},
+        runtime_hooks=[],
+        excludes=[],
+        win_no_prefer_redirects=False,
+        win_private_assemblies=False,
+        cipher=block_cipher,
+        noarchive=False,
+    )
     exe = EXE(
         pyz,
         a.scripts,
