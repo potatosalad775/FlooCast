@@ -16,7 +16,10 @@ hidden_imports += collect_submodules('certifi')
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[],
+    binaries=[
+        ('/System/Library/Frameworks/Tk.framework/Tk', 'tk'),
+        ('/System/Library/Frameworks/Tcl.framework/Tcl', 'tcl'),
+    ],
     datas=[
         ('FlooCastApp.gif', '.'),
         ('FlooCastApp.ico', '.'),
@@ -25,7 +28,7 @@ a = Analysis(
         ('offS.png', '.'),
         ('locales', 'locales'),
     ],
-    #hiddenimports=hidden_imports,
+    hiddenimports=hidden_imports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
