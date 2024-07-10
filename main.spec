@@ -17,8 +17,6 @@ hidden_imports += collect_submodules('serial_tool')
 hidden_imports += collect_submodules('notify-py')
 hidden_imports += collect_submodules('certifi')
 
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-
 if sys.platform == 'darwin':
     a = Analysis(
         ['main.py'],
@@ -45,6 +43,7 @@ if sys.platform == 'darwin':
         cipher=block_cipher,
         noarchive=False,
     )
+    pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
     exe = EXE(
         pyz,
         a.scripts,
@@ -100,6 +99,7 @@ else:
         cipher=block_cipher,
         noarchive=False,
     )
+    pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
     exe = EXE(
         pyz,
         a.scripts,
