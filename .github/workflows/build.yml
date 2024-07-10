@@ -55,7 +55,7 @@ jobs:
       run: |
         pyinstaller --clean --distpath dist/FlooCast-x86_64 main.spec
         # Remove unnecessary artifact
-        rm -rf dist/FlooCast-x86_86/FlooCast
+        rm -rf dist/FlooCast-x86_64/FlooCast
 
     - name: Build with PyInstaller (Non-macOS)
       if: runner.os != 'macOS'
