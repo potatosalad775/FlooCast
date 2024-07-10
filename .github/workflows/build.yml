@@ -2,9 +2,9 @@ name: Build FlooCast
 
 on:
   push:
-    branches: [ precompiled ]
+    branches: [precompiled]
   pull_request:
-    branches: [ precompiled ]
+    branches: [precompiled]
 
 jobs:
   build:
@@ -22,67 +22,67 @@ jobs:
             python-version: 3.9
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: precompiled
+      - uses: actions/checkout@v4
+        with:
+          ref: precompiled
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies (Linux only)
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gir1.2-appindicator3-0.1
+      - name: Install system dependencies (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gir1.2-appindicator3-0.1
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pyinstaller
-        pip install pystray notify-py pyserial serial-tool certifi
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          pip install tk pystray notify-py pyserial serial-tool certifi
 
-    - name: Build with PyInstaller (macOS ARM)
-      if: runner.os == 'macOS' && matrix.os == 'macos-latest'
-      run: |
-        pyinstaller --clean --distpath dist/FlooCast-arm64 main.spec
-        # Remove unnecessary artifact
-        rm -rf dist/FlooCast-arm64/FlooCast
-        # Ad-hoc Codesign
-        /usr/bin/codesign --force --deep --sign - dist/FlooCast-arm64/FlooCast.app
+      - name: Build with PyInstaller (macOS ARM)
+        if: runner.os == 'macOS' && matrix.os == 'macos-latest'
+        run: |
+          pyinstaller --clean --add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' --distpath dist/FlooCast-arm64 main.spec
+          # Remove unnecessary artifact
+          rm -rf dist/FlooCast-arm64/FlooCast
+          # Ad-hoc Codesign
+          /usr/bin/codesign --force --deep --sign - dist/FlooCast-arm64/FlooCast.app
 
-    - name: Build with PyInstaller (macOS x86_64)
-      if: runner.os == 'macOS' && matrix.os == 'macos-12'
-      run: |
-        pyinstaller --clean --distpath dist/FlooCast-x86_64 main.spec
-        # Remove unnecessary artifact
-        rm -rf dist/FlooCast-x86_64/FlooCast
-        # Ad-hoc Codesign
-        /usr/bin/codesign --force --deep --sign - dist/FlooCast-x86_64/FlooCast.app
+      - name: Build with PyInstaller (macOS x86_64)
+        if: runner.os == 'macOS' && matrix.os == 'macos-12'
+        run: |
+          pyinstaller --clean --add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' --distpath dist/FlooCast-x86_64 main.spec
+          # Remove unnecessary artifact
+          rm -rf dist/FlooCast-x86_64/FlooCast
+          # Ad-hoc Codesign
+          /usr/bin/codesign --force --deep --sign - dist/FlooCast-x86_64/FlooCast.app
 
-    - name: Build with PyInstaller (Non-macOS)
-      if: runner.os != 'macOS'
-      run: |
-        pyinstaller --clean main.spec
+      - name: Build with PyInstaller (Non-macOS)
+        if: runner.os != 'macOS'
+        run: |
+          pyinstaller --clean main.spec
 
-    - name: Upload artifact (macOS ARM)
-      if: runner.os == 'macOS' && matrix.os == 'macos-latest'
-      uses: actions/upload-artifact@v4
-      with:
-        name: FlooCast-macos-arm64
-        path: dist/FlooCast-arm64
+      - name: Upload artifact (macOS ARM)
+        if: runner.os == 'macOS' && matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlooCast-macos-arm64
+          path: dist/FlooCast-arm64
 
-    - name: Upload artifact (macOS x86_64)
-      if: runner.os == 'macOS' && matrix.os == 'macos-12'
-      uses: actions/upload-artifact@v4
-      with:
-        name: FlooCast-macos-x86_64
-        path: dist/FlooCast-x86_64
+      - name: Upload artifact (macOS x86_64)
+        if: runner.os == 'macOS' && matrix.os == 'macos-12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlooCast-macos-x86_64
+          path: dist/FlooCast-x86_64
 
-    - name: Upload artifact (macOS ARM)
-      if: runner.os != 'macOS'
-      uses: actions/upload-artifact@v4
-      with:
-        name: FlooCast-${{ matrix.os }}
-        path: dist/*
+      - name: Upload artifact (macOS ARM)
+        if: runner.os != 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlooCast-${{ matrix.os }}
+          path: dist/*
